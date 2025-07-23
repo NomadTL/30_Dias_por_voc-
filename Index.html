@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bem-vindo(a)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #005ec2;
+    }
+
+    .greeting {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Olá, seja bem-vindo(a)!</h2>
+    <p>Insira seu nome abaixo:</p>
+    <input type="text" id="nomeUsuario" placeholder="Digite seu nome aqui..." />
+    <button onclick="mostrarSaudacao()">Confirmar</button>
+    <div class="greeting" id="mensagemSaudacao"></div>
+  </div>
+
+  <script>
+    function mostrarSaudacao() {
+      const nome = document.getElementById("nomeUsuario").value;
+      const saudacao = document.getElementById("mensagemSaudacao");
+
+      if (nome.trim() === "") {
+        saudacao.textContent = "Por favor, insira um nome válido.";
+      } else {
+        saudacao.textContent = `Olá, ${nome}! É um prazer ter você aqui.`;
+      }
+    }
+  </script>
+</body>
+</html>
