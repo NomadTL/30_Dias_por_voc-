@@ -24,6 +24,7 @@
       font-size: 16px;
       z-index: 1000;
       display: none;
+      max-width: 300px;
     }
 
     .container {
@@ -62,6 +63,7 @@
       border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
+      margin-right: 10px;
     }
 
     button:hover {
@@ -87,6 +89,13 @@
       margin-bottom: 8px;
       border-radius: 8px;
     }
+
+    /* Container para os botões ficar lado a lado */
+    .btn-group {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
   </style>
 </head>
 
@@ -108,7 +117,10 @@
       <h2>Meus objetivos</h2>
       <p>Você pode adicionar até 5 objetivos:</p>
       <input type="text" id="inputObjetivo" placeholder="Digite seu objetivo ou projeto" />
-      <button onclick="adicionarObjetivo()" id="btnAdicionar">Adicionar</button>
+      <div class="btn-group">
+        <button onclick="adicionarObjetivo()" id="btnAdicionar">Adicionar</button>
+        <button onclick="concluirObjetivos()" id="btnConcluir">Concluir</button>
+      </div>
       <ul id="listaObjetivos"></ul>
     </div>
   </div>
@@ -124,11 +136,12 @@
       } else {
         localStorage.setItem("nomeUsuario", nome);
 
-        nomeNoCanto.textContent = nome;
         nomeNoCanto.style.display = "block";
-        document.getElementById("telaInicial").style.display = "none";
+        atualizarResumo();
 
+        document.getElementById("telaInicial").style.display = "none";
         document.getElementById("telaObjetivos").style.display = "flex";
+
         carregarObjetivos();
       }
     }
@@ -161,16 +174,36 @@
       carregarObjetivos();
     }
 
+    function concluirObjetivos() {
+      // Esconde toda a área do meio (telaObjetivos)
+      document.getElementById("telaObjetivos").style.display = "none";
+
+      // Mostra o nome e objetivos no canto
+      document.getElementById("userNameCorner").style.display = "block";
+      atualizarResumo();
+    }
+
+    function atualizarResumo() {
+      const nome = localStorage.getItem("nomeUsuario") || "";
+      const objetivos = JSON.parse(localStorage.getItem("objetivos")) || [];
+      const container = document.getElementById("userNameCorner");
+
+      let html = `<strong>${nome}</strong><br><br>Objetivos:<ul style="list-style: inside; padding-left: 0; margin-top: 8px;">`;
+      objetivos.forEach(obj => {
+        html += `<li>${obj}</li>`;
+      });
+      html += "</ul>";
+
+      container.innerHTML = html;
+    }
+
     window.onload = function () {
       const nomeSalvo = localStorage.getItem("nomeUsuario");
-      const nomeNoCanto = document.getElementById("userNameCorner");
-
       if (nomeSalvo) {
-        nomeNoCanto.textContent = nomeSalvo;
-        nomeNoCanto.style.display = "block";
+        document.getElementById("userNameCorner").style.display = "block";
+        atualizarResumo();
         document.getElementById("telaInicial").style.display = "none";
         document.getElementById("telaObjetivos").style.display = "flex";
-
         carregarObjetivos();
       }
     };
