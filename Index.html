@@ -8,20 +8,37 @@
     body {
       font-family: Arial, sans-serif;
       background-color: #f0f4f8;
+      margin: 0;
+      height: 100vh;
+    }
+
+    .user-name-display {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background-color: #0077ff;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      z-index: 1000;
+      display: none; 
+    }
+
+    .container {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      margin: 0;
+      height: 100%;
+      text-align: center;
     }
 
-    .container {
+    .card {
       background: white;
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      text-align: center;
       width: 90%;
       max-width: 400px;
     }
@@ -58,23 +75,31 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Olá, seja bem-vindo(a)!</h2>
-    <p>Insira seu nome abaixo:</p>
-    <input type="text" id="nomeUsuario" placeholder="Digite seu nome aqui..." />
-    <button onclick="mostrarSaudacao()">Confirmar</button>
-    <div class="greeting" id="mensagemSaudacao"></div>
+  <div class="user-name-display" id="userNameCorner"></div>
+
+  <div class="container" id="telaInicial">
+    <div class="card">
+      <h2>Olá, seja bem-vindo(a)!</h2>
+      <p>Insira seu nome abaixo:</p>
+      <input type="text" id="nomeUsuario" placeholder="Digite seu nome aqui..." />
+      <button onclick="mostrarSaudacao()">Confirmar</button>
+      <div class="greeting" id="mensagemSaudacao"></div>
+    </div>
   </div>
 
   <script>
     function mostrarSaudacao() {
-      const nome = document.getElementById("nomeUsuario").value;
+      const nome = document.getElementById("nomeUsuario").value.trim();
       const saudacao = document.getElementById("mensagemSaudacao");
+      const nomeNoCanto = document.getElementById("userNameCorner");
 
-      if (nome.trim() === "") {
+      if (nome === "") {
         saudacao.textContent = "Por favor, insira um nome válido.";
       } else {
-        saudacao.textContent = `Olá, ${nome}! É um prazer ter você aqui.`;
+        nomeNoCanto.textContent = nome;
+        nomeNoCanto.style.display = "block";
+
+        document.getElementById("telaInicial").style.display = "none";
       }
     }
   </script>
