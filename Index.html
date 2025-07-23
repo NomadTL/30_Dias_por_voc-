@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bem-vindo(a)</title>
   <style>
     body {
@@ -22,7 +23,7 @@
       border-radius: 8px;
       font-size: 16px;
       z-index: 1000;
-      display: none; 
+      display: none;
     }
 
     .container {
@@ -38,7 +39,7 @@
       background: white;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       width: 90%;
       max-width: 400px;
     }
@@ -72,8 +73,23 @@
       font-size: 18px;
       color: #333;
     }
+
+    #listaObjetivos {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    #listaObjetivos li {
+      background-color: #e8f0fe;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+    }
   </style>
 </head>
+
 <body>
   <div class="user-name-display" id="userNameCorner"></div>
 
@@ -87,33 +103,78 @@
     </div>
   </div>
 
+  <div class="container" id="telaObjetivos" style="display: none;">
+    <div class="card">
+      <h2>Meus objetivos</h2>
+      <p>Você pode adicionar até 5 objetivos:</p>
+      <input type="text" id="inputObjetivo" placeholder="Digite seu objetivo ou projeto" />
+      <button onclick="adicionarObjetivo()" id="btnAdicionar">Adicionar</button>
+      <ul id="listaObjetivos"></ul>
+    </div>
+  </div>
+
   <script>
-  function mostrarSaudacao() {
-    const nome = document.getElementById("nomeUsuario").value.trim();
-    const nomeNoCanto = document.getElementById("userNameCorner");
-    const saudacao = document.getElementById("mensagemSaudacao");
+    function mostrarSaudacao() {
+      const nome = document.getElementById("nomeUsuario").value.trim();
+      const nomeNoCanto = document.getElementById("userNameCorner");
+      const saudacao = document.getElementById("mensagemSaudacao");
 
-    if (nome === "") {
-      saudacao.textContent = "Por favor, insira um nome válido.";
-    } else {
-      localStorage.setItem("nomeUsuario", nome);
+      if (nome === "") {
+        saudacao.textContent = "Por favor, insira um nome válido.";
+      } else {
+        localStorage.setItem("nomeUsuario", nome);
 
-      nomeNoCanto.textContent = nome;
-      nomeNoCanto.style.display = "block";
-      document.getElementById("telaInicial").style.display = "none";
+        nomeNoCanto.textContent = nome;
+        nomeNoCanto.style.display = "block";
+        document.getElementById("telaInicial").style.display = "none";
+
+        document.getElementById("telaObjetivos").style.display = "flex";
+        carregarObjetivos();
+      }
     }
-  }
 
-  window.onload = function () {
-    const nomeSalvo = localStorage.getItem("nomeUsuario");
-    const nomeNoCanto = document.getElementById("userNameCorner");
+    function carregarObjetivos() {
+      const objetivos = JSON.parse(localStorage.getItem("objetivos")) || [];
+      const lista = document.getElementById("listaObjetivos");
 
-    if (nomeSalvo) {
-      nomeNoCanto.textContent = nomeSalvo;
-      nomeNoCanto.style.display = "block";
-      document.getElementById("telaInicial").style.display = "none";
+      lista.innerHTML = "";
+      objetivos.forEach((obj) => {
+        const li = document.createElement("li");
+        li.textContent = obj;
+        lista.appendChild(li);
+      });
+
+      document.getElementById("btnAdicionar").disabled = objetivos.length >= 5;
     }
-  };
-</script>
+
+    function adicionarObjetivo() {
+      const input = document.getElementById("inputObjetivo");
+      const texto = input.value.trim();
+      if (texto === "") return;
+
+      let objetivos = JSON.parse(localStorage.getItem("objetivos")) || [];
+      if (objetivos.length >= 5) return;
+
+      objetivos.push(texto);
+      localStorage.setItem("objetivos", JSON.stringify(objetivos));
+      input.value = "";
+      carregarObjetivos();
+    }
+
+    window.onload = function () {
+      const nomeSalvo = localStorage.getItem("nomeUsuario");
+      const nomeNoCanto = document.getElementById("userNameCorner");
+
+      if (nomeSalvo) {
+        nomeNoCanto.textContent = nomeSalvo;
+        nomeNoCanto.style.display = "block";
+        document.getElementById("telaInicial").style.display = "none";
+        document.getElementById("telaObjetivos").style.display = "flex";
+
+        carregarObjetivos();
+      }
+    };
+  </script>
 </body>
+
 </html>
