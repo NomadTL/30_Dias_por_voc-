@@ -88,20 +88,32 @@
   </div>
 
   <script>
-    function mostrarSaudacao() {
-      const nome = document.getElementById("nomeUsuario").value.trim();
-      const saudacao = document.getElementById("mensagemSaudacao");
-      const nomeNoCanto = document.getElementById("userNameCorner");
+  function mostrarSaudacao() {
+    const nome = document.getElementById("nomeUsuario").value.trim();
+    const nomeNoCanto = document.getElementById("userNameCorner");
+    const saudacao = document.getElementById("mensagemSaudacao");
 
-      if (nome === "") {
-        saudacao.textContent = "Por favor, insira um nome válido.";
-      } else {
-        nomeNoCanto.textContent = nome;
-        nomeNoCanto.style.display = "block";
+    if (nome === "") {
+      saudacao.textContent = "Por favor, insira um nome válido.";
+    } else {
+      localStorage.setItem("nomeUsuario", nome);
 
-        document.getElementById("telaInicial").style.display = "none";
-      }
+      nomeNoCanto.textContent = nome;
+      nomeNoCanto.style.display = "block";
+      document.getElementById("telaInicial").style.display = "none";
     }
-  </script>
+  }
+
+  window.onload = function () {
+    const nomeSalvo = localStorage.getItem("nomeUsuario");
+    const nomeNoCanto = document.getElementById("userNameCorner");
+
+    if (nomeSalvo) {
+      nomeNoCanto.textContent = nomeSalvo;
+      nomeNoCanto.style.display = "block";
+      document.getElementById("telaInicial").style.display = "none";
+    }
+  };
+</script>
 </body>
 </html>
